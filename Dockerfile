@@ -14,5 +14,6 @@ RUN apt-get update -y
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install dbt-snowflake
 
-COPY entrypoint.sh /user/local/entrypoint.sh
-ENTRYPOINT [ "/user/local/entrypoint.sh" ]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]
