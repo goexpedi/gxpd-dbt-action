@@ -3,7 +3,7 @@
 set -o pipefail
 
 echo "dbt project folder set as: \"${INPUT_DBT_PROJECT_FOLDER}\""
-export DBT_PROFILES_DIR = ${INPUT_DBT_PROJECT_FOLDER}
+export DBT_PROFILES_DIR=${INPUT_DBT_PROJECT_FOLDER}
 echo "dbt profile folder set as: \"${DBT_PROFILES_DIR}\""
 cd ${INPUT_DBT_PROJECT_FOLDER}
 
