@@ -1,0 +1,40 @@
+name: Run dbt build and test on master push
+
+on:
+  push:
+    paths:
+      # Update this path
+      - "dbt_ns/**"
+    branches:
+      - "master"
+
+env:
+  DBT_ENV_SECRET_GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  DBT_ENV_SECRET_ADMIN_PASS: ${{ secrets.SF_ADMIN_PASS }}
+  DBT_ENV_SECRET_FIVETRAN_PASS: ${{ secrets.SF_FIVETRAN_PASS }}
+
+jobs:
+  action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: dbt-deps
+        uses: goexpedi/gxpd-dbt-action@master
+        with:
+          dbt_command: "dbt --log-format text deps"
+          # Update this path
+          dbt_project_folder: "dbt_ns"
+      - name: dbt-run
+        uses: goexpedi/gxpd-dbt-action@master
+        with:
+          dbt_command: "dbt --log-format text run --full-refresh -t prod"
+          # Update this path
+          dbt_project_folder: "dbt_ns"
+      - name: dbt-test
+        uses: goexpedi/gxpd-dbt-action@master
+        with:
+          dbt_command: "dbt --log-format text test -t prod"
+          # Update this path
+          dbt_project_folder: "dbt_ns"
