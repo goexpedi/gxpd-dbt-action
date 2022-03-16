@@ -1,0 +1,28 @@
+# Put this file into target repo
+name: Run dbt build and test on master push
+
+on:
+  push:
+    paths:
+      # Update path below
+      - 'dbt_project/**'
+  # schedule:
+  #   - cron:  '*/15 * * * *'
+
+jobs:
+  action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: dbt-cmd
+        id: dbt-cmd
+        uses: ./
+        with:
+          dbt_command: "dbt --log-format text debug --profiles-dir ."
+          dbt_project_folder: "dbt_project"
+
+      - name: Get the result
+        run: echo "${{ steps.dbt-cmd.outputs.result }}"
+        shell: bash
